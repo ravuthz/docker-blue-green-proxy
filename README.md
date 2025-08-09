@@ -16,6 +16,12 @@ chmod +x deploy.sh
 
 ```
 
+#### Using `install.sh` from this repository with exists `curl` command
+
+```bash
+curl -L https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/install.sh | sh
+```
+
 #### Update docker-compose.yml create new if not exists
 
 Update the _docker-compose.yml_ make sure have 3 sevices required blue, green and proxy. Make those services at same network exampe `same_network_proxy`. Just expose port for proxy only. Disable traefik is optional server without traefik `traefik.enable=false`
