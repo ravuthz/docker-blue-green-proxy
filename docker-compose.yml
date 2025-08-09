@@ -1,0 +1,47 @@
+services:
+  blue:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - "80"
+    environment:
+      NODE_ENV: ${ENVIRONMENT}
+    container_name: ${APP_NAME}-${ENVIRONMENT}-blue
+    networks:
+      - bms_network
+    labels:
+      - "traefik.enable=false"
+
+  green:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - "80"
+    environment:
+      NODE_ENV: ${ENVIRONMENT}
+    container_name: ${APP_NAME}-${ENVIRONMENT}-green
+    networks:
+      - bms_network
+    labels:
+      - "traefik.enable=false"
+
+  proxy:
+    restart: always
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.proxy
+    container_name: ${APP_NAME}-${ENVIRONMENT}
+    networks:
+      - bms_network
+    ports:
+      - "90:80"
+    depends_on:
+      - blue
+      - green
+networks:
+  bms_network:
+    driver: bridge
