@@ -1,8 +1,9 @@
 # Blue Green deployment with nginx as proxy
 
-### Usage:
+## Usage:
 
-#### Clone or Copy only _nginx_ folder and _deploy.sh_ files
+### 1. Create nginx and deploy files
+Clone or Copy only _nginx_ folder and _deploy.sh_ files
 
 ```bash
 
@@ -16,13 +17,22 @@ chmod +x deploy.sh
 
 ```
 
-#### Using `install.sh` from this repository with exists `curl` command
+Or use `install.sh` from this repository with exists `curl` command
 
 ```bash
 curl -L https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/install.sh | sh
 ```
 
-#### Update docker-compose.yml create new if not exists
+### 2. Update `.env` if not exist then copy from `.env.example`
+
+```bash
+# .env.example
+DOMAIN=local.app
+APP_NAME=vite.app
+ENVIRONMENT=production
+```
+
+### 3. Update docker-compose.yml create new if not exists
 
 Update the _docker-compose.yml_ make sure have 3 sevices required blue, green and proxy. Make those services at same network exampe `same_network_proxy`. Just expose port for proxy only. Disable traefik is optional server without traefik `traefik.enable=false`
 
