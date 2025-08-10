@@ -8,5 +8,5 @@ mkdir nginx
 
 curl -L -o nginx/blue.conf https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/nginx/blue.conf
 curl -L -o nginx/green.conf https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/nginx/green.conf
-curl -L -o nginx/proxy.conf https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/nginx/proxy.conf
+curl -L -o nginx/nginx.conf https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/nginx/nginx.conf
 curl -L -o nginx/Dockerfile.proxy https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/heads/main/nginx/Dockerfile.proxy
