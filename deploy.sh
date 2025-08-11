@@ -44,7 +44,7 @@ CURRENT_COLOR=$(printf '%s\n' "$RUNNING_SERVICES" | grep -E '^(blue|green)$' | h
 
 echo " "
 echo "=================================="
-echo " 🚀 ${BLUE}Blue${NC}-${GREEN}Green${NC} Lazy Deployment 🚀 "
+echo " 🚀  ${BLUE}Blue${NC}-${GREEN}Green${NC} Lazy Deployment 🚀 "
 echo "=================================="
 echo " "
 if [ "$CURRENT_COLOR" = "blue" ]; then
