@@ -27,14 +27,24 @@ curl -L https://raw.githubusercontent.com/ravuthz/docker-blue-green-proxy/refs/h
 
 ```bash
 # .env.example
+
 DOMAIN=local.app
 APP_NAME=vite.app
 ENVIRONMENT=production
+
+# For Laravel app
+APP_ENV=${ENVIRONMENT}
+
+# For NodeJS app
+NODE_ENV=${ENVIRONMENT}
+
 ```
 
 ### 3. Update docker-compose.yml create new if not exists
 
 Update the _docker-compose.yml_ make sure have 3 sevices required blue, green and proxy. Make those services at same network exampe `same_network_proxy`. Just expose port for proxy only. Disable traefik is optional server without traefik `traefik.enable=false`
+
+Deploy without Traefik
 
 ```yml
 services:
@@ -84,4 +94,55 @@ services:
 networks:
   same_network_proxy:
     driver: bridge
+```
+
+Deploy with Traefik
+
+```yml
+services:
+  blue:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - "80"
+    container_name: ${APP_NAME}-${ENVIRONMENT}-blue
+    networks:
+      - traefik
+    labels:
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.rule=Host(`${DOMAIN}`)'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.entrypoints=websecure'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls=true'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls.certresolver=myresolver'
+      - 'traefik.http.services.${APP_NAME}-${ENVIRONMENT}.loadbalancer.server.port=80'
+  green:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - "80"
+    container_name: ${APP_NAME}-${ENVIRONMENT}-green
+    networks:
+      - traefik
+    labels:
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.rule=Host(`${DOMAIN}`)'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.entrypoints=websecure'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls=true'
+      - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls.certresolver=myresolver'
+      - 'traefik.http.services.${APP_NAME}-${ENVIRONMENT}.loadbalancer.server.port=80'
+  proxy:
+    restart: always
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.proxy
+    container_name: ${APP_NAME}-${ENVIRONMENT}
+    networks:
+      - traefik
+    ports:
+      - "9191:80"
+    depends_on:
+      - blue
+      - green
 ```
