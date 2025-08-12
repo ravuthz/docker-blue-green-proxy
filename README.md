@@ -111,6 +111,7 @@ services:
     networks:
       - traefik
     labels:
+      - 'traefik.enable=true'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.rule=Host(`${DOMAIN}`)'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.entrypoints=websecure'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls=true'
@@ -127,6 +128,7 @@ services:
     networks:
       - traefik
     labels:
+      - 'traefik.enable=true'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.rule=Host(`${DOMAIN}`)'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.entrypoints=websecure'
       - 'traefik.http.routers.${APP_NAME}-${ENVIRONMENT}.tls=true'
